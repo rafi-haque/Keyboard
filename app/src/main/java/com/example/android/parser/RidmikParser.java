@@ -1,4 +1,4 @@
-package com.example.android.softkeyboard;
+package com.example.android.parser;
 
 import java.util.Scanner;
 

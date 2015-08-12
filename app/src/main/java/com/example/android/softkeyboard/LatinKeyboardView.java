@@ -21,13 +21,18 @@ import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodSubtype;
 
 public class LatinKeyboardView extends KeyboardView {
 
     static final int KEYCODE_OPTIONS = -100;
+    private View.OnTouchListener onTouchListener;
     // TODO: Move this into android.inputmethodservice.Keyboard
     static final int KEYCODE_LANGUAGE_SWITCH = -101;
+    static final int KEYCODE_TOUNGE_SMILEY = -111;
+    static final int KEYCODE_BIG_SMILE_SMILEY = -112;
 
     public LatinKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);

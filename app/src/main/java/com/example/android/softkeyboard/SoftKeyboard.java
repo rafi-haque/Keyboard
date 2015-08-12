@@ -17,6 +17,7 @@
 package com.example.android.softkeyboard;
 
 import android.app.Dialog;
+import android.graphics.PointF;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
@@ -25,6 +26,7 @@ import android.text.InputType;
 import android.text.method.MetaKeyKeyListener;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.CompletionInfo;
@@ -32,6 +34,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.view.inputmethod.InputMethodSubtype;
+
+import com.example.android.parser.RidmikParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +73,7 @@ public class SoftKeyboard extends InputMethodService
     private int mLastDisplayWidth;
     private boolean mCapsLock;
     private long mLastShiftTime;
-    private long mMetaState;
+    private long mMetaState = 0;
     
     private LatinKeyboard mSymbolsKeyboard;
     private LatinKeyboard mSymbolsShiftedKeyboard;
@@ -80,6 +84,7 @@ public class SoftKeyboard extends InputMethodService
     private String mWordSeparators;
     private RidmikParser toBangla = new RidmikParser();
     private LatinKeyboard mPhoneticKeyboard;
+    private float mSwipeSensitivity;
 
     /**
      * Main initialization of the input method component.  Be sure to call
@@ -447,6 +452,7 @@ public class SoftKeyboard extends InputMethodService
             final InputMethodSubtype subtype = mInputMethodManager.getCurrentInputMethodSubtype();
             if(subtype.getLocale().equals("bangla")){
                 inputConnection.commitText(toBangla.toBangla(mComposing.toString()), mComposing.length());
+
             }
             else if(subtype.getLocale().equals("en_US")){
                 inputConnection.commitText(mComposing, mComposing.length());
@@ -534,6 +540,10 @@ public class SoftKeyboard extends InputMethodService
             return;
         } else if (primaryCode == LatinKeyboardView.KEYCODE_OPTIONS) {
             // Show a menu or somethin'
+        } else if(primaryCode == LatinKeyboardView.KEYCODE_TOUNGE_SMILEY) {
+            getCurrentInputConnection().commitText(":-P", 0);
+        } else if(primaryCode == LatinKeyboardView.KEYCODE_BIG_SMILE_SMILEY) {
+            getCurrentInputConnection().commitText(":-D", 0);
         } else if (primaryCode == Keyboard.KEYCODE_MODE_CHANGE
                 && mInputView != null) {
             Keyboard current = mInputView.getKeyboard();
@@ -747,4 +757,6 @@ public class SoftKeyboard extends InputMethodService
     
     public void onRelease(int primaryCode) {
     }
+
+
 }
